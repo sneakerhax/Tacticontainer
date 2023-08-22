@@ -30,9 +30,9 @@ def main():
     # print banner
     banner()
 
-    container_dir = "Arsenal-containers"
+    containers_dir = "Arsenal-containers"
 
-    if Path.exists(Path(container_dir)):
+    if Path.exists(Path(containers_dir)):
         print("[+] Pulling Arsenal-containers Github repo")
         repo = Repo("Arsenal-containers")
         origin = repo.remotes.origin
