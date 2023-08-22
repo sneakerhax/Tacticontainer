@@ -30,6 +30,17 @@ def main():
     # print banner
     banner()
 
+    container_dir = "Arsenal-containers"
+
+    if Path.exists(Path(container_dir)):
+        print("[+] Pulling Arsenal-containers Github repo")
+        repo = Repo("Arsenal-containers")
+        origin = repo.remotes.origin
+        origin.pull()
+    else:
+        print("[+] Cloning Arsenal-containers Github repo")
+        Repo.clone_from("https://github.com/sneakerhax/Arsenal-containers", "Arsenal-containers")
+
     # parse arguments
     parser = argparse.ArgumentParser(description='Ultra Recon')
     parser.add_argument('-n', '--name', required=True, action='store', dest='name', type=str, help='Target name')
@@ -48,7 +59,7 @@ def main():
         print("[-] Failed to load config file")
 
     # Tool file
-    tool_dir = Path('../', args.image)
+    tool_dir = Path('Arsenal-containers', args.image)
 
     # Connect to the Docker daemon
     try:
