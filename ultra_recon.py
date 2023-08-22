@@ -89,12 +89,12 @@ def main():
         container_output = client.containers.run(args.image, remove=True, command=target)
     if args.image == "nmap-small":
         container_output = client.containers.run(args.image, remove=True, command=target)
-    if args.image == "pydnsrecon":
-        container_output = client.containers.run(args.image, remove=True, command=target, environment=["censys_API_ID=" + censys_API_ID, "censys_secret=" + censys_secret])
-    if args.image == "pydnsrecon-passive":
-        container_output = client.containers.run(args.image, remove=True, command=target, environment=["censys_API_ID=" + censys_API_ID, "censys_secret=" + censys_secret])
-    if args.image == "pydnsrecon-m1":
-        container_output = client.containers.run(args.image, remove=True, command=target, environment=["censys_API_ID=" + censys_API_ID, "censys_secret=" + censys_secret])
+    # if args.image == "pydnsrecon":
+    #     container_output = client.containers.run(args.image, remove=True, command=target, environment=["censys_API_ID=" + censys_API_ID, "censys_secret=" + censys_secret])
+    # if args.image == "pydnsrecon-passive":
+    #     container_output = client.containers.run(args.image, remove=True, command=target, environment=["censys_API_ID=" + censys_API_ID, "censys_secret=" + censys_secret])
+    # if args.image == "pydnsrecon-m1":
+    #     container_output = client.containers.run(args.image, remove=True, command=target, environment=["censys_API_ID=" + censys_API_ID, "censys_secret=" + censys_secret])
     if args.image == "whatweb":
         container_output = client.containers.run(args.image, remove=True, command=["--color=never", target])
     if args.image == "dirsearch":
