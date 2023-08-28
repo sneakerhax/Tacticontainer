@@ -72,12 +72,12 @@ def main():
     if args.image == "dirsearch":
         if Path.exists(Path(tool_dir)):
             print("[+] Pulling Dirsearch Github repo")
-            repo = Repo("../Dirsearch")
+            repo = Repo("Arsenal-containers/Dirsearch")
             origin = repo.remotes.origin
             origin.pull()
         else:
             print("[+] Cloning Dirsearch Github repo")
-            Repo.clone_from("https://github.com/maurosoria/dirsearch.git", "../Dirsearch")
+            Repo.clone_from("https://github.com/maurosoria/dirsearch.git", "Arsenal-containers/Dirsearch")
 
     # Build Docker image with Docker SDK for Python
     print("[+] Building image " + str(args.image))
