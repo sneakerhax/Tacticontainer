@@ -53,8 +53,8 @@ def main():
     try:
         config = configparser.ConfigParser()
         config.read('config.conf')
-        censys_API_ID = config['censys.io']['censys_API_ID']
-        censys_secret = config['censys.io']['censys_secret']
+        # censys_API_ID = config['censys.io']['censys_API_ID']
+        # censys_secret = config['censys.io']['censys_secret']
     except Exception as e:
         print("[-] Failed to load config file")
 
