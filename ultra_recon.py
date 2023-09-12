@@ -9,6 +9,10 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 
+# global variables
+containers_dir = "Arsenal-containers"
+
+
 def banner():
     print("    __  ______                ____")
     print("   / / / / / /__________ _   / __ \___  _________  ____")
@@ -20,18 +24,8 @@ def banner():
     print("")
 
 
-def extract_hostname(target):
-    target = urlparse(target).netloc
-    return target
-
-
-def main():
-
-    # print banner
-    banner()
-
-    containers_dir = "Arsenal-containers"
-
+# Check if arsenal containers directory exists. If true update if false clone.
+def pull_arsenal_containers():
     if Path.exists(Path(containers_dir)):
         print("[+] Pulling Arsenal-containers Github repo")
         repo = Repo("Arsenal-containers")
@@ -41,7 +35,56 @@ def main():
         print("[+] Cloning Arsenal-containers Github repo")
         Repo.clone_from("https://github.com/sneakerhax/Arsenal-containers", "Arsenal-containers")
 
-    # parse arguments
+
+# Check if tool directory exists. If true update if false clone.
+def pull_remote_source(image, tool_dir):
+    if Path.exists(Path(tool_dir)):
+        print("[+] Pulling Dirsearch Github repo")
+        repo = Repo("Arsenal-containers/Dirsearch")
+        origin = repo.remotes.origin
+        origin.pull()
+    else:
+        print("[+] Cloning Dirsearch Github repo")
+        Repo.clone_from("https://github.com/maurosoria/dirsearch.git", "Arsenal-containers/Dirsearch")
+
+
+# Check for image path. If true build image if false exit.
+def build_image(docker_client, image, tool_dir):
+    print("[+] Building image " + str(image))
+    if Path.exists(tool_dir):
+        docker_client.images.build(path=str(tool_dir), rm=True, tag=image)
+    else:
+        print("[-] Path to Dockerfile does not exist")
+        sys.exit()
+
+
+# Extract url based target names by returning target without http:// or https://
+# Used for writing to output path
+def extract_hostname(target):
+    target = urlparse(target).netloc
+    return target
+
+
+# Determine image and run corresponding container run command
+def run_container(image, docker_client, target):
+    print("[+] Running container " + str(image) + " on target " + str(target))
+    if image == "nmap":
+        container_output = docker_client.containers.run(image, remove=True, command=target)
+    if image == "nmap-small":
+        container_output = docker_client.containers.run(image, remove=True, command=target)
+    if image == "whatweb":
+        container_output = docker_client.containers.run(image, remove=True, command=["--color=never", target])
+    if image == "dirsearch":
+        container_output = docker_client.containers.run(image, remove=True, command=["--no-color", "-q", "-u", target])
+    return container_output
+
+
+def main():
+
+    # print banner
+    banner()
+
+    # parse arguments from command line
     parser = argparse.ArgumentParser(description='Ultra Recon')
     parser.add_argument('-n', '--name', required=True, action='store', dest='name', type=str, help='Target name')
     parser.add_argument('-t', '--target', required=True, action='store', dest='target', type=str, help='Target to scan')
@@ -49,7 +92,7 @@ def main():
     parser.add_argument('-c', '--command', action='store', dest='command', type=str, help="Command to pass")
     args = parser.parse_args()
 
-    # load config
+    # load configuration file
     try:
         config = configparser.ConfigParser()
         config.read('config.conf')
@@ -58,65 +101,43 @@ def main():
     except Exception as e:
         print("[-] Failed to load config file")
 
-    # Tool file
-    tool_dir = Path('Arsenal-containers', args.image)
+    # pull or update arsenal containers folder
+    pull_arsenal_containers()
+
+    image = args.image
+    target = args.target
+
+    # Set tool dirctory
+    tool_dir = Path('Arsenal-containers', image)
 
     # Connect to the Docker daemon
     try:
-        client = docker.from_env()
+        docker_client = docker.from_env()
     except Exception as e:
         print("[-] Failed when connecting to Docker daemon")
         sys.exit()
 
-    # Check for dirsearch folder and if it exist delete before cloning the tool repo
-    if args.image == "dirsearch":
-        if Path.exists(Path(tool_dir)):
-            print("[+] Pulling Dirsearch Github repo")
-            repo = Repo("Arsenal-containers/Dirsearch")
-            origin = repo.remotes.origin
-            origin.pull()
-        else:
-            print("[+] Cloning Dirsearch Github repo")
-            Repo.clone_from("https://github.com/maurosoria/dirsearch.git", "Arsenal-containers/Dirsearch")
+    # Check if image is dirsearch. This function needs to be updated so that it can be used for all remote sources
+    if image == "dirsearch":
+        pull_remote_source(image, tool_dir)
 
     # Build Docker image with Docker SDK for Python
-    print("[+] Building image " + str(args.image))
-    if Path.exists(tool_dir):
-        client.images.build(path=str(tool_dir), rm=True, tag=args.image)
-    else:
-        print("[-] Path to Dockerfile does not exist")
-        sys.exit()
-
-    # Target output file check and creation
-    output_dir = Path('output', args.name)
-    output_dir.mkdir(exist_ok=True, parents=True)
+    build_image(docker_client, image, tool_dir)
 
     # Run Docker container with Docker SDK for Python
     now_scan_start = datetime.datetime.now()
     print("[*] Starting Scan at " + now_scan_start.strftime("%m-%d-%Y_%H:%M:%S"))
-    print("[+] Running container " + str(args.image) + " on target " + str(args.target))
-    target = args.target
-    if args.image == "nmap":
-        container_output = client.containers.run(args.image, remove=True, command=target)
-    if args.image == "nmap-small":
-        container_output = client.containers.run(args.image, remove=True, command=target)
-    # if args.image == "pydnsrecon":
-    #     container_output = client.containers.run(args.image, remove=True, command=target, environment=["censys_API_ID=" + censys_API_ID, "censys_secret=" + censys_secret])
-    # if args.image == "pydnsrecon-passive":
-    #     container_output = client.containers.run(args.image, remove=True, command=target, environment=["censys_API_ID=" + censys_API_ID, "censys_secret=" + censys_secret])
-    # if args.image == "pydnsrecon-m1":
-    #     container_output = client.containers.run(args.image, remove=True, command=target, environment=["censys_API_ID=" + censys_API_ID, "censys_secret=" + censys_secret])
-    if args.image == "whatweb":
-        container_output = client.containers.run(args.image, remove=True, command=["--color=never", target])
-    if args.image == "dirsearch":
-        container_output = client.containers.run(args.image, remove=True, command=["--no-color", "-q", "-u", target])
-        # container_output = client.containers.run(args.image, remove=True, command=["--no-color", "--help"])
-        target = extract_hostname(target)
+    container_output = run_container(image, docker_client, target)
     now_scan_end = datetime.datetime.now()
     print("[*] Finished Scan at " + now_scan_end.strftime("%m-%d-%Y_%H:%M:%S"))
 
-    # Output container stdout to output folder
-    outputpath = Path(output_dir, target + "_" + args.image + "_" + now_scan_end.strftime("%m-%d-%Y_%H:%M:%S") + ".txt")
+    # Target output file check and creation
+    output_dir = Path('output', args.name)
+    output_dir.mkdir(exist_ok=True, parents=True)
+    # Write container stdout to output folder
+    if image == "dirsearch":
+        target = extract_hostname(target)
+    outputpath = Path(output_dir, target + "_" + image + "_" + now_scan_end.strftime("%m-%d-%Y_%H:%M:%S") + ".txt")
     print("[+] Writing output to " + str(outputpath))
     with open(outputpath, 'w') as out:
         out.write(container_output.decode())
