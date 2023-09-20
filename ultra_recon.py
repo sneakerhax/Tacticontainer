@@ -12,6 +12,7 @@ from urllib.parse import urlparse
 # global variables
 containers_dir = "Arsenal-containers"
 
+
 # print banner
 def banner():
     print("    __  ______                ____")
