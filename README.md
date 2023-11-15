@@ -66,6 +66,7 @@ $ Ultra-Recon % python3 ultra_recon.py -n sample -t scanme.nmap.org -i nmap
 * PyDNSRecon-m1 (Deprecated)
 * Whatweb
 * Dirsearch
+* Subfinder
 
 ## References
 

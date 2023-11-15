@@ -11,7 +11,11 @@ from urllib.parse import urlparse
 
 # global variables
 containers_dir = "Arsenal-containers"
-
+# remote_sources = ["dirsearch", "subfinder"]
+remote_sources = [
+                ["dirsearch", "https://github.com/maurosoria/dirsearch"], 
+                ["subfinder", "https://github.com/projectdiscovery/subfinder"]
+                ]
 
 # print banner
 def banner():
@@ -38,20 +42,21 @@ def pull_arsenal_containers():
 
 
 # Check if tool directory exists. If true update if false clone.
-def pull_remote_source(image, tool_dir):
+def pull_remote_source(image, tool_dir, remote_repo):
     if Path.exists(Path(tool_dir)):
-        print("[+] Pulling Dirsearch Github repo")
-        repo = Repo("Arsenal-containers/Dirsearch")
+        print("[+] Pulling " + str(image.capitalize()) + " Github repo")
+        repo = Repo(tool_dir)
         origin = repo.remotes.origin
         origin.pull()
     else:
-        print("[+] Cloning Dirsearch Github repo")
-        Repo.clone_from("https://github.com/maurosoria/dirsearch.git", "Arsenal-containers/Dirsearch")
+        print("[+] Cloning " + str(image.capitalize()) + " Github repo")
+        repo_url = ""
+        Repo.clone_from(remote_repo, tool_dir)
 
 
 # Check for image path. If true build image if false exit.
 def build_image(docker_client, image, tool_dir):
-    print("[+] Building image " + str(image))
+    print("[+] Building image " + str(image.capitalize()))
     if Path.exists(tool_dir):
         docker_client.images.build(path=str(tool_dir), rm=True, tag=image)
     else:
@@ -77,6 +82,8 @@ def run_container(image, docker_client, target):
         container_output = docker_client.containers.run(image, remove=True, command=["--color=never", target])
     if image == "dirsearch":
         container_output = docker_client.containers.run(image, remove=True, command=["--no-color", "-q", "-u", target])
+    if image == "subfinder":
+        container_output = docker_client.containers.run(image, remove=True, command=["-d", target])
     return container_output
 
 
@@ -109,7 +116,7 @@ def main():
     target = args.target
 
     # Set tool dirctory
-    tool_dir = Path('Arsenal-containers', image)
+    tool_dir = Path('Arsenal-containers', image.capitalize())
 
     # Connect to the Docker daemon
     try:
@@ -119,8 +126,12 @@ def main():
         sys.exit()
 
     # Check if image is dirsearch. This function needs to be updated so that it can be used for all remote sources
-    if image == "dirsearch":
-        pull_remote_source(image, tool_dir)
+    # if image in [tool[0] for tool in remote_sources]:
+    for tool in remote_sources:
+        if tool[0] == image:
+            remote_repo = tool[1]
+            pull_remote_source(image, tool_dir, remote_repo)
+
 
     # Build Docker image with Docker SDK for Python
     build_image(docker_client, image, tool_dir)
