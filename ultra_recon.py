@@ -41,7 +41,7 @@ def pull_arsenal_containers():
         Repo.clone_from("https://github.com/sneakerhax/Arsenal-containers", "Arsenal-containers")
 
 
-# Check if tool directory exists. If true update if false clone.
+# Check if tool directory exists. If true pull repo updates if false clone remote repo.
 def pull_remote_source(image, tool_dir, remote_repo):
     if Path.exists(Path(tool_dir)):
         print("[+] Pulling " + str(image.capitalize()) + " Github repo")
@@ -125,8 +125,7 @@ def main():
         print("[-] Failed when connecting to Docker daemon")
         sys.exit()
 
-    # Check if image is dirsearch. This function needs to be updated so that it can be used for all remote sources
-    # if image in [tool[0] for tool in remote_sources]:
+    # Check if tool is in the remote sources list. If true pass the remote repo to the pull_remote_source function
     for tool in remote_sources:
         if tool[0] == image:
             remote_repo = tool[1]
