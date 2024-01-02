@@ -98,6 +98,13 @@ def main():
     parser.add_argument('-c', '--command', action='store', dest='command', type=str, help="Command to pass")
     args = parser.parse_args()
 
+    # Connect to the Docker daemon
+    try:
+        docker_client = docker.from_env()
+    except Exception as _:
+        print("[-] Failed when connecting to Docker daemon")
+        sys.exit()
+    
     # load configuration file
     try:
         config = configparser.ConfigParser()
@@ -115,13 +122,6 @@ def main():
 
     # Set tool dirctory
     tool_dir = Path('Arsenal-containers', image.capitalize())
-
-    # Connect to the Docker daemon
-    try:
-        docker_client = docker.from_env()
-    except Exception as _:
-        print("[-] Failed when connecting to Docker daemon")
-        sys.exit()
 
     # Check if tool is in the remote sources list. If true pass the remote repo to the pull_remote_source function
     for tool in remote_sources:
