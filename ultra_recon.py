@@ -71,7 +71,7 @@ def extract_hostname(target):
 
 # Determine image and run corresponding container run command
 def run_container(image, docker_client, target):
-    print("[+] Running container " + str(image) + " on target " + str(target))
+    print("[+] Running container " + str(image.capitalize()) + " on target " + str(target))
     if image == "nmap":
         container_output = docker_client.containers.run(image, remove=True, command=target)
     if image == "nmap-small":
