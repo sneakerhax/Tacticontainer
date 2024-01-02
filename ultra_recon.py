@@ -4,7 +4,6 @@ import datetime
 import docker
 import sys
 from git import Repo
-from os import system
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -50,7 +49,6 @@ def pull_remote_source(image, tool_dir, remote_repo):
         origin.pull()
     else:
         print("[+] Cloning " + str(image.capitalize()) + " Github repo")
-        repo_url = ""
         Repo.clone_from(remote_repo, tool_dir)
 
 
@@ -106,7 +104,7 @@ def main():
         config.read('config.conf')
         # censys_API_ID = config['censys.io']['censys_API_ID']
         # censys_secret = config['censys.io']['censys_secret']
-    except Exception as e:
+    except Exception as _:
         print("[-] Failed to load config file")
 
     # pull or update arsenal containers folder
@@ -121,7 +119,7 @@ def main():
     # Connect to the Docker daemon
     try:
         docker_client = docker.from_env()
-    except Exception as e:
+    except Exception as _:
         print("[-] Failed when connecting to Docker daemon")
         sys.exit()
 
