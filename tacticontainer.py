@@ -92,7 +92,7 @@ def main():
     banner()
 
     # parse arguments from command line
-    parser = argparse.ArgumentParser(description='A tool for running Offensive Security tools in containers')
+    parser = argparse.ArgumentParser(description='An automation tool for running Offensive Security tools in containers')
     parser.add_argument('-n', '--name', required=True, action='store', dest='name', type=str, help='Target name')
     parser.add_argument('-t', '--target', required=True, action='store', dest='target', type=str, help='Target to scan')
     parser.add_argument('-i', '--image', required=True, action='store', dest='image', type=str, help="Name of Image")
