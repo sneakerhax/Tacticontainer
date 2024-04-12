@@ -1,6 +1,6 @@
 # Tacticontainer
 
-A tool for running Offensive Security tools in containers
+An automation tool for running Offensive Security tools in containers
 
 Tacticontainer (a play off [Tacticooler](https://splatoon.fandom.com/wiki/Tacticooler), a sub-weapon in the video game Splatoon) uses the Docker SDK for Python to automate the running of Offensive Security tools in containers. The outputs are written to organized files.
 
