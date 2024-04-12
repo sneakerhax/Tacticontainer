@@ -14,7 +14,7 @@ Docker is required to run the containers.
 
 ## Install Docker SDK for Python
 
-```python
+```zsh
 python3 -m pip install -r requirements.txt
 ```
 
