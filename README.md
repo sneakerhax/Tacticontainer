@@ -60,7 +60,7 @@ python3 tacticontainer -n <name_of_target> -t <target> -i <docker_image_name>
 
 ## Example Usage
 
-```zsh
+```
 $ tacticontainer $ python3 tacticontainer.py -n sample -t scanme.nmap.org -i nmap
   ______           __  _                  __        _
  /_  __/___ ______/ /_(_)________  ____  / /_____ _(_)___  ___  _____
