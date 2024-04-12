@@ -17,15 +17,16 @@ remote_sources = [
                 ]
 
 # print banner
+# banner generation: https://patorjk.com/software/taag/#p=display&f=Slant&t=Tacticontainer
 def banner():
-    print(r"    __  ______                ____")
-    print(r"   / / / / / /__________ _   / __ \___  _________  ____")
-    print(r"  / / / / / __/ ___/ __ `/  / /_/ / _ \/ ___/ __ \/ __ \\")
-    print(r" / /_/ / / /_/ /  / /_/ /  / _, _/  __/ /__/ /_/ / / / /")
-    print(r" \____/_/\__/_/   \__,_/  /_/ |_|\___/\___/\____/_/ /_/")
+    print(r"  ______           __  _                  __        _")                
+    print(r" /_  __/___ ______/ /_(_)________  ____  / /_____ _(_)___  ___  _____")
+    print(r"  / / / __ `/ ___/ __/ / ___/ __ \/ __ \/ __/ __ `/ / __ \/ _ \/ ___/")
+    print(r" / / / /_/ / /__/ /_/ / /__/ /_/ / / / / /_/ /_/ / / / / /  __/ /")  
+    print(r"/_/  \__,_/\___/\__/_/\___/\____/_/ /_/\__/\__,_/_/_/ /_/\___/_/")    
     print("")
     print("\t by sneakerhax...")
-    print("")
+    print("")                                                                 
 
 
 # Check if arsenal containers directory exists. If true update if false clone.
@@ -91,7 +92,7 @@ def main():
     banner()
 
     # parse arguments from command line
-    parser = argparse.ArgumentParser(description='Ultra Recon')
+    parser = argparse.ArgumentParser(description='A tool for running Offensive Security tools in containers')
     parser.add_argument('-n', '--name', required=True, action='store', dest='name', type=str, help='Target name')
     parser.add_argument('-t', '--target', required=True, action='store', dest='target', type=str, help='Target to scan')
     parser.add_argument('-i', '--image', required=True, action='store', dest='image', type=str, help="Name of Image")

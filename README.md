@@ -1,25 +1,45 @@
-# Ultra Recon
+# Tacticontainer
 
-A tool for running all your recon tools in Docker without remembering Docker commands
+A tool for running Offensive Security tools in containers
 
-This tool is essentially a wrapper for Docker used to run offensive security tools. The tool itself is very small because all it needs to run is one Python file (ultra_recon.py) and the Dockerfiles needed to build the tool images (some tools also contain files that will be added to the image). A wide variety of tools can be added with just a Dockerfile to build the image and a working ```client.containers.run``` configuration. This tool can be made even smaller if all tools are added to an accessible Docker registry such as hub.docker.com
+Tacticontainer (a play off [Tacticooler](https://splatoon.fandom.com/wiki/Tacticooler), a sub-weapon in the video game Splatoon) uses the Docker SDK for Python to automate the running of Offensive Security tools in containers. The outputs are written to organized files.
 
-![alt text](.img/Ultra_Sun_Ultra_Moon_Ultra_Recon_Squad.png)
+![alt text](.img/tacticooler.png)
 
-## Installation
+## Install Docker on your local system
 
-Install Docker on your local system:
+Docker is required to run the containers.
+
 * <https://docs.docker.com/get-docker/>
 
-Install Docker SDK for Python:
+## Install Docker SDK for Python
 
-```
+```zsh
 python3 -m pip install -r requirements.txt
 ```
 
+## Using VS Code for development
+
+```zsh
+shift + command (⌘) + P -> Python: Create Environment
+```
+
+Creates a new environment after following the instructions (all dependencies should be added automatically)
+
+* [Python Environments in VS Code](https://code.visualstudio.com/docs/python/environments)
+
+```zsh
+source .venv/bin/activate
+```
+
+Activate environment
+
+
+## Adding keys to the config file
+
 Keys should be added to config.conf (Example for Censys):
 
-```bash
+```zsh
 [censys.io]
 censys_API_ID = <censys_API_ID>
 censys_secret = <censys_secret>
@@ -27,8 +47,8 @@ censys_secret = <censys_secret>
 
 ## Usage
 
-```
-python3 ultra_recon -n <name_of_target> -t <target> -i <docker_image_name>
+```zsh
+python3 tacticontainer -n <name_of_target> -t <target> -i <docker_image_name>
 ```
 
 ## Available Options
@@ -40,13 +60,13 @@ python3 ultra_recon -n <name_of_target> -t <target> -i <docker_image_name>
 
 ## Example Usage
 
-```
-$ Ultra-Recon % python3 ultra_recon.py -n sample -t scanme.nmap.org -i nmap
-    __  ______                ____
-   / / / / / /__________ _   / __ \___  _________  ____
-  / / / / / __/ ___/ __ `/  / /_/ / _ \/ ___/ __ \/ __ \
- / /_/ / / /_/ /  / /_/ /  / _, _/  __/ /__/ /_/ / / / /
- \____/_/\__/_/   \__,_/  /_/ |_|\___/\___/\____/_/ /_/
+```zsh
+$ tacticontainer $ python3 tacticontainer.py -n sample -t scanme.nmap.org -i nmap
+  ______           __  _                  __        _
+ /_  __/___ ______/ /_(_)________  ____  / /_____ _(_)___  ___  _____
+  / / / __ `/ ___/ __/ / ___/ __ \/ __ \/ __/ __ `/ / __ \/ _ \/ ___/
+ / / / /_/ / /__/ /_/ / /__/ /_/ / / / / /_/ /_/ / / / / /  __/ /
+/_/  \__,_/\___/\__/_/\___/\____/_/ /_/\__/\__,_/_/_/ /_/\___/_/
 
 	 by sneakerhax...
 
