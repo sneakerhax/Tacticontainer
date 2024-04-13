@@ -8,7 +8,7 @@ Tacticontainer (a play off [Tacticooler](https://splatoon.fandom.com/wiki/Tactic
 
 The [Arsenal-containers](https://github.com/sneakerhax/Arsenal-containers) repo is pulled when the tool runs and remote sources are supported.
 
-## Install Docker on your local system
+## Install Docker
 
 Docker is required to run the containers.
 
