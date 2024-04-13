@@ -50,7 +50,7 @@ censys_secret = <censys_secret>
 ## Usage
 
 ```zsh
-python3 tacticontainer -n <name_of_target> -t <target> -i <docker_image_name>
+python3 tacticontainer.py -n <name_of_target> -t <target> -i <docker_image_name>
 ```
 
 ## Available Options
@@ -63,7 +63,7 @@ python3 tacticontainer -n <name_of_target> -t <target> -i <docker_image_name>
 ## Example Usage
 
 ```
-$ tacticontainer $ python3 tacticontainer.py -n sample -t scanme.nmap.org -i nmap
+$ python3 tacticontainer.py -n sample -t scanme.nmap.org -i nmap
   ______           __  _                  __        _
  /_  __/___ ______/ /_(_)________  ____  / /_____ _(_)___  ___  _____
   / / / __ `/ ___/ __/ / ___/ __ \/ __ \/ __/ __ `/ / __ \/ _ \/ ___/
