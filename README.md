@@ -92,4 +92,4 @@ $ python3 tacticontainer.py -n sample -t scanme.nmap.org -i nmap
 
 ## References
 
-* <https://docker-py.readthedocs.io/en/stable/>
+* [Docker SDK for Python](https://docker-py.readthedocs.io/en/stable/)
