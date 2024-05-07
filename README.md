@@ -12,7 +12,7 @@ The [Arsenal-containers](https://github.com/sneakerhax/Arsenal-containers) repo 
 
 Docker is required to run the containers.
 
-* <https://docs.docker.com/get-docker/>
+* [Get Docker](https://docs.docker.com/get-docker/)
 
 ## Install Docker SDK for Python
 
