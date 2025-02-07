@@ -1,4 +1,4 @@
-# Run nmap command with targets.txtfile
+# Run nmap command with targets.txt file
 
 import docker
 from pathlib import Path
