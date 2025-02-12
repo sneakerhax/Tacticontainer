@@ -78,17 +78,36 @@ $ python3 tacticontainer.py -n sample -t scanme.nmap.org -i nmap
 [*] Finished Scan at 11-03-2021_13:34:38
 [+] Writing output to output/10.0.0.1/scanme.nmap.org_nmap_11-03-2021_13:34:38.txt
 ```
+Running basic nmap scan with required arguments
+
+```
+$ python tacticontainer.py -n scanme -t scanme.nmap.org -i naabu -c "'-p' '80' '-j' '-host' 'scanme.nmap.org'"
+  ______           __  _                  __        _
+ /_  __/___ ______/ /_(_)________  ____  / /_____ _(_)___  ___  _____
+  / / / __ `/ ___/ __/ / ___/ __ \/ __ \/ __/ __ `/ / __ \/ _ \/ ___/
+ / / / /_/ / /__/ /_/ / /__/ /_/ / / / / /_/ /_/ / / / / /  __/ /
+/_/  \__,_/\___/\__/_/\___/\____/_/ /_/\__/\__,_/_/_/ /_/\___/_/
+
+         by sneakerhax...
+
+[+] Pulling Arsenal-containers Github repo
+[+] Pulling Naabu Github repo
+[+] Building image Naabu
+[*] Starting Scan at 02-11-2025_16:19:50
+[+] Running container Naabu on target scanme.nmap.org
+[*] Finished Scan at 02-11-2025_16:19:53
+[+] Writing output to output/scanme/scanme.nmap.org_naabu_02-11-2025_16:19:53.txt
+```
+When using -c you must specify all arguments
 
 ## Current images
 
 * Nmap
 * Nmap-small
-* PyDNSRecon (Deprecated)
-* PyDNSRecon-Passive (Deprecated)
-* PyDNSRecon-m1 (Deprecated)
 * Whatweb
 * Dirsearch
 * Subfinder
+* Naabu
 
 ## References
 

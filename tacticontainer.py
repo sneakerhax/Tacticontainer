@@ -13,7 +13,8 @@ containers_dir = "Arsenal-containers"
 # remote_sources = ["dirsearch", "subfinder"]
 remote_sources = [
                 ["dirsearch", "https://github.com/maurosoria/dirsearch"], 
-                ["subfinder", "https://github.com/projectdiscovery/subfinder"]
+                ["subfinder", "https://github.com/projectdiscovery/subfinder"],
+                ["naabu", "https://github.com/projectdiscovery/naabu"]
                 ]
 
 # print banner
@@ -71,7 +72,7 @@ def extract_hostname(target):
 
 
 # Determine image and run corresponding container run command
-def run_container(image, docker_client, target):
+def run_container(image, docker_client, target, command):
     print("[+] Running container " + str(image.capitalize()) + " on target " + str(target))
     if image == "nmap":
         container_output = docker_client.containers.run(image, remove=True, command=target)
@@ -83,6 +84,11 @@ def run_container(image, docker_client, target):
         container_output = docker_client.containers.run(image, remove=True, command=["--no-color", "-q", "-u", target])
     if image == "subfinder":
         container_output = docker_client.containers.run(image, remove=True, command=["-d", target])
+    if image == "naabu":
+        if command:
+            container_output = docker_client.containers.run(image, remove=True, command=command)
+        else:
+            container_output = docker_client.containers.run(image, remove=True, command=["-host", target])
     return container_output
 
 
@@ -120,6 +126,7 @@ def main():
 
     image = args.image
     target = args.target
+    command = args.command
 
     # Set tool dirctory
     tool_dir = Path('Arsenal-containers', image.capitalize())
@@ -137,7 +144,7 @@ def main():
     # Run Docker container with Docker SDK for Python
     now_scan_start = datetime.datetime.now()
     print("[*] Starting Scan at " + now_scan_start.strftime("%m-%d-%Y_%H:%M:%S"))
-    container_output = run_container(image, docker_client, target)
+    container_output = run_container(image, docker_client, target, command)
     now_scan_end = datetime.datetime.now()
     print("[*] Finished Scan at " + now_scan_end.strftime("%m-%d-%Y_%H:%M:%S"))
 
