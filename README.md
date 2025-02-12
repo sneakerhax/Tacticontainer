@@ -81,7 +81,7 @@ $ python3 tacticontainer.py -n sample -t scanme.nmap.org -i nmap
 Running basic nmap scan with required arguments
 
 ```
-$ python tacticontainer.py -n scanme -t scanme.nmap.org -i naabu -c "'-p' '80' '-j' '-host' 'scanme.nmap.org'"
+$ python tacticontainer.py -n scanme -t scanme.nmap.org -i naabu -c "-p 80 -j -host scanme.nmap.org"
   ______           __  _                  __        _
  /_  __/___ ______/ /_(_)________  ____  / /_____ _(_)___  ___  _____
   / / / __ `/ ___/ __/ / ___/ __ \/ __ \/ __/ __ `/ / __ \/ _ \/ ___/
@@ -93,10 +93,10 @@ $ python tacticontainer.py -n scanme -t scanme.nmap.org -i naabu -c "'-p' '80' '
 [+] Pulling Arsenal-containers Github repo
 [+] Pulling Naabu Github repo
 [+] Building image Naabu
-[*] Starting Scan at 02-11-2025_16:19:50
+[*] Starting Scan at 02-11-2025_17:57:52
 [+] Running container Naabu on target scanme.nmap.org
-[*] Finished Scan at 02-11-2025_16:19:53
-[+] Writing output to output/scanme/scanme.nmap.org_naabu_02-11-2025_16:19:53.txt
+[*] Finished Scan at 02-11-2025_17:57:55
+[+] Writing output to output/scanme/scanme.nmap.org_naabu_02-11-2025_17:57:55.txt
 ```
 When using -c you must specify all arguments
 

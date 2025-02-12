@@ -126,7 +126,7 @@ def main():
 
     image = args.image
     target = args.target
-    command = args.command
+    command = list(args.command.split(" "))
 
     # Set tool dirctory
     tool_dir = Path('Arsenal-containers', image.capitalize())
