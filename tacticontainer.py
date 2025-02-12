@@ -75,9 +75,15 @@ def extract_hostname(target):
 def run_container(image, docker_client, target, command):
     print("[+] Running container " + str(image.capitalize()) + " on target " + str(target))
     if image == "nmap":
-        container_output = docker_client.containers.run(image, remove=True, command=target)
+        if command:
+            container_output = docker_client.containers.run(image, remove=True, command=command)
+        else:
+            container_output = docker_client.containers.run(image, remove=True, command=target)
     if image == "nmap-small":
-        container_output = docker_client.containers.run(image, remove=True, command=target)
+        if command:
+            container_output = docker_client.containers.run(image, remove=True, command=command)
+        else:
+            container_output = docker_client.containers.run(image, remove=True, command=target)
     if image == "whatweb":
         container_output = docker_client.containers.run(image, remove=True, command=["--color=never", target])
     if image == "dirsearch":
