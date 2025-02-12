@@ -126,7 +126,10 @@ def main():
 
     image = args.image
     target = args.target
-    command = list(args.command.split(" "))
+    if args.command:
+        command = list(args.command.split(" "))
+    else:
+        command = []
 
     # Set tool dirctory
     tool_dir = Path('Arsenal-containers', image.capitalize())
