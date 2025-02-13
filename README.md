@@ -108,6 +108,7 @@ When using -c you must specify all arguments
 * Dirsearch
 * Subfinder
 * Naabu
+* Httpx
 
 ## References
 

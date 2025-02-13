@@ -10,11 +10,12 @@ from urllib.parse import urlparse
 
 # global variables
 containers_dir = "Arsenal-containers"
-# remote_sources = ["dirsearch", "subfinder"]
+# remote sources list
 remote_sources = [
                 ["dirsearch", "https://github.com/maurosoria/dirsearch"], 
                 ["subfinder", "https://github.com/projectdiscovery/subfinder"],
-                ["naabu", "https://github.com/projectdiscovery/naabu"]
+                ["naabu", "https://github.com/projectdiscovery/naabu"],
+                ["httpx", "https://github.com/projectdiscovery/httpx"]
                 ]
 
 # print banner
@@ -95,6 +96,11 @@ def run_container(image, docker_client, target, command):
             container_output = docker_client.containers.run(image, remove=True, command=command)
         else:
             container_output = docker_client.containers.run(image, remove=True, command=["-host", target])
+    if image == "httpx":
+        if command:
+            container_output = docker_client.containers.run(image, remove=True, command=command)
+        else:
+            container_output = docker_client.containers.run(image, remove=True, command=["-u", target])
     return container_output
 
 
