@@ -115,6 +115,7 @@ def main():
     parser.add_argument('-t', '--target', required=True, action='store', dest='target', type=str, help='Target to scan')
     parser.add_argument('-i', '--image', required=True, action='store', dest='image', type=str, help="Name of Image")
     parser.add_argument('-c', '--command', action='store', dest='command', type=str, help="Command to pass")
+    parser.add_argument('-d', '--debug', action='store_true', dest='debug', help="Debug mode")
     args = parser.parse_args()
 
     # Connect to the Docker daemon
@@ -169,6 +170,10 @@ def main():
     # Write container stdout to output folder
     if image == "dirsearch":
         target = extract_hostname(target)
+    # Debug function to print container output
+    if args.debug:
+        print("[*] Debug: Printing container output to console")
+        print(container_output.decode())
     outputpath = Path(output_dir, target + "_" + image + "_" + now_scan_end.strftime("%m-%d-%Y_%H:%M:%S") + ".txt")
     print("[+] Writing output to " + str(outputpath))
     with open(outputpath, 'w') as out:
