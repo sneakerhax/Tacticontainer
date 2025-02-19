@@ -36,6 +36,25 @@ source .venv/bin/activate
 
 Activate environment
 
+## Using terminal for development or install (Requires python3-venv and python3-pip)
+
+```
+apt install python3-venv python3-pip
+```
+
+Install Python3 Virtual Environments and Python3 pip
+
+```
+python3 -m venv .venv
+```
+
+Create virtual environment (from Tacticontainer root folder)
+
+```
+source .venv/bin/activate
+```
+
+Activate environment
 
 ## Adding keys to the config file
 
