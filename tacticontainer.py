@@ -73,7 +73,7 @@ def extract_hostname(target):
 
 
 # Determine image and run corresponding container run command
-def run_container(image, docker_client, target, command):
+def run_container(image, docker_client, target, command=[]):
     print("[+] Running container " + str(image.capitalize()) + " on target " + str(target))
     if image == "nmap":
         if command:
@@ -137,12 +137,10 @@ def main():
     # pull or update arsenal containers folder
     pull_arsenal_containers()
 
+    # set args as single word variables
     image = args.image
     target = args.target
-    if args.command:
-        command = list(args.command.split(" "))
-    else:
-        command = []
+    command = args.command
 
     # Set tool dirctory
     tool_dir = Path('Arsenal-containers', image.capitalize())
