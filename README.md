@@ -1,8 +1,8 @@
 # Tacticontainer
 
-An automation tool for running Red Team tools in containers
+Automation for running Red Team tools in containers
 
-Tacticontainer (a play off [Tacticooler](https://splatoon.fandom.com/wiki/Tacticooler), a sub-weapon in the video game Splatoon) uses the Docker SDK for Python to automate the running of Red Team tools in containers. The outputs are written to organized files.
+Tacticontainer (a play on [Tacticooler](https://splatoon.fandom.com/wiki/Tacticooler), a sub-weapon in the video game Splatoon) uses the Docker SDK for Python to automate the running of Red Team tools in containers. The outputs are written to organized files.
 
 ![alt text](.img/tacticooler.png)
 
