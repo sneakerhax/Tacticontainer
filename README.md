@@ -2,7 +2,7 @@
 
 An automation tool for running Red Team tools in containers
 
-Tacticontainer (a play off [Tacticooler](https://splatoon.fandom.com/wiki/Tacticooler), a sub-weapon in the video game Splatoon) uses the Docker SDK for Python to automate the running of Offensive Security tools in containers. The outputs are written to organized files.
+Tacticontainer (a play off [Tacticooler](https://splatoon.fandom.com/wiki/Tacticooler), a sub-weapon in the video game Splatoon) uses the Docker SDK for Python to automate the running of Red Team tools in containers. The outputs are written to organized files.
 
 ![alt text](.img/tacticooler.png)
 
@@ -117,11 +117,31 @@ $ python3 tacticontainer.py -n scanme -t scanme.nmap.org -i naabu -c "-p 80 -j -
 [*] Finished Scan at 02-11-2025_17:57:55
 [+] Writing output to output/scanme/scanme.nmap.org_naabu_02-11-2025_17:57:55.txt
 ```
-When using -c you must specify all arguments
+When using -c you must specify all arguments and the target (Unless specifying target file)
+
+```
+python3 tacticontainer.py -i nmap -n scanme.nmap.org -f targets.txt           
+  ______           __  _                  __        _
+ /_  __/___ ______/ /_(_)________  ____  / /_____ _(_)___  ___  _____
+  / / / __ `/ ___/ __/ / ___/ __ \/ __ \/ __/ __ `/ / __ \/ _ \/ ___/
+ / / / /_/ / /__/ /_/ / /__/ /_/ / / / / /_/ /_/ / / / / /  __/ /
+/_/  \__,_/\___/\__/_/\___/\____/_/ /_/\__/\__,_/_/_/ /_/\___/_/
+
+         by sneakerhax...
+
+[+] Pulling Arsenal-containers Github repo
+[+] Building image Nmap
+[*] Starting Scan at 03-25-2025_18:01:01
+[+] Running container Nmap with target file: targets.txt
+[*] Finished Scan at 03-25-2025_18:01:02
+[+] Writing output to output/scanme.nmap.org/nmap_03-25-2025_18:01:02.txt
+```
+
+Running scan with target file
 
 ## Current images
 
-* Nmap
+* Nmap (supports target file)
 * Nmap-small
 * Whatweb
 * Dirsearch
