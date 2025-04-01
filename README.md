@@ -148,6 +148,7 @@ Running scan with target file
 * Subfinder
 * Naabu
 * Httpx
+* Nuclei
 
 ## References
 

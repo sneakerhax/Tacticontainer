@@ -15,7 +15,8 @@ remote_sources = [
                 ["dirsearch", "https://github.com/maurosoria/dirsearch"], 
                 ["subfinder", "https://github.com/projectdiscovery/subfinder"],
                 ["naabu", "https://github.com/projectdiscovery/naabu"],
-                ["httpx", "https://github.com/projectdiscovery/httpx"]
+                ["httpx", "https://github.com/projectdiscovery/httpx"],
+                ["nuclei", "https://github.com/projectdiscovery/nuclei"]
                 ]
 # list of tools that support target file input
 supports_target_file = ["nmap"]
@@ -115,6 +116,11 @@ def run_container(image, docker_client, target, command, volume):
             else:
                 container_output = docker_client.containers.run(image, remove=True, command=["-host", target])
         elif image == "httpx":
+            if command:
+                container_output = docker_client.containers.run(image, remove=True, command=command)
+            else:
+                container_output = docker_client.containers.run(image, remove=True, command=["-u", target])
+        elif image == "nuclei":
             if command:
                 container_output = docker_client.containers.run(image, remove=True, command=command)
             else:
@@ -222,7 +228,7 @@ def main():
         print("[*] Debug: Printing container output to console")
         print(container_output.decode())
     
-    # Create output path
+    # Create output path and write to file
     outputpath = Path(output_dir, image + "_" + now_scan_end.strftime("%m-%d-%Y_%H:%M:%S") + ".txt")
     print("[+] Writing output to " + str(outputpath))
     try:
