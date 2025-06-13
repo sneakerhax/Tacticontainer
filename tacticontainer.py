@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 
 
 # global variables
-containers_dir = "Arsenal-containers"
+containers_dir = "Containers"
 # remote sources list
 remote_sources = [
                 ["dirsearch", "https://github.com/maurosoria/dirsearch"], 
@@ -34,16 +34,16 @@ def banner():
     print("")                                                                 
 
 
-# Check if arsenal containers directory exists. If true update if false clone.
-def pull_arsenal_containers():
+# Check if containers directory exists. If true update if false clone.
+def pull_containers_repo():
     if Path.exists(Path(containers_dir)):
-        print("[+] Pulling Arsenal-containers Github repo")
-        repo = Repo("Arsenal-containers")
+        print("[+] Pulling Containers Github repo")
+        repo = Repo("Containers")
         origin = repo.remotes.origin
         origin.pull()
     else:
-        print("[+] Cloning Arsenal-containers Github repo")
-        Repo.clone_from("https://github.com/sneakerhax/Arsenal-containers", "Arsenal-containers")
+        print("[+] Cloning Containers Github repo")
+        Repo.clone_from("https://github.com/sneakerhax/Containers", "Containers")
 
 
 # Check if tool directory exists. If true pull repo updates if false clone remote repo.
@@ -172,9 +172,9 @@ def main():
         print(f"[-] Failed to load config file: {e}")
         sys.exit(1)
 
-    # pull or update arsenal containers folder
+    # pull or update containers folder
     try:
-        pull_arsenal_containers()
+        pull_containers_repo()
     except Exception as e:
         print(f"[-] Failed to pull/update containers: {e}")
         sys.exit(1)
@@ -198,7 +198,7 @@ def main():
             print(f"[-] {image} does not support target file input")
             sys.exit(1)
     # Set tool directory
-    tool_dir = Path('Arsenal-containers', image.capitalize())
+    tool_dir = Path('Containers', image.capitalize())
 
     # Check if tool is in the remote sources list. If true pass the remote repo to the pull_remote_source function
     for tool in remote_sources:

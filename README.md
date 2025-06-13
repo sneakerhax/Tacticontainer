@@ -10,7 +10,7 @@ Tacticontainer (a play on [Tacticooler](https://splatoon.fandom.com/wiki/Tactico
 
 ![alt text](.img/tacticooler.png)
 
-The [Arsenal-containers](https://github.com/sneakerhax/Arsenal-containers) repo is pulled when the tool runs and remote sources are supported.
+The [Containers](https://github.com/sneakerhax/Containers) repo is pulled when the tool runs and remote sources are supported.
 
 ## Install Docker
 
@@ -113,7 +113,7 @@ $ python3 tacticontainer.py -n scanme -t scanme.nmap.org -i naabu -c "-p 80 -j -
 
          by sneakerhax...
 
-[+] Pulling Arsenal-containers Github repo
+[+] Pulling Containers Github repo
 [+] Pulling Naabu Github repo
 [+] Building image Naabu
 [*] Starting Scan at 02-11-2025_17:57:52
@@ -133,7 +133,7 @@ python3 tacticontainer.py -i nmap -n scanme.nmap.org -f targets.txt
 
          by sneakerhax...
 
-[+] Pulling Arsenal-containers Github repo
+[+] Pulling Containers Github repo
 [+] Building image Nmap
 [*] Starting Scan at 03-25-2025_18:01:01
 [+] Running container Nmap with target file: targets.txt
