@@ -1,3 +1,5 @@
 output/**/*.txt
 config.conf
 Containers
+.venv/
+core/__pycache__/
