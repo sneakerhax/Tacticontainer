@@ -45,7 +45,7 @@ def main():
         description='Automation for running Red Team tools in containers'
     )
     parser.add_argument(
-        '-n', '--name', required=True, action='store', dest='name', type=str, help='Folder name'
+        '-n', '--name', required=True, action='store', dest='name', type=str, help='Folder name to save output'
     )
     parser.add_argument(
         '-i', '--image', required=True, action='store', dest='image', type=str, help='Name of Image to run'
@@ -62,7 +62,7 @@ def main():
         '-t', '--target', action='store', dest='target', type=str, help='Target to scan'
     )
     target_group.add_argument(
-        '-f', '--file', action='store', dest='file', type=str, help='Target file location'
+        '-f', '--file', action='store', dest='file', type=str, help='Targets file location'
     )
 
     args = parser.parse_args()
