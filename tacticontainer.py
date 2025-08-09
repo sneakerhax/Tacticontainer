@@ -1,4 +1,3 @@
-
 import argparse
 import configparser
 import datetime
@@ -46,10 +45,10 @@ def main():
         description='Automation for running Red Team tools in containers'
     )
     parser.add_argument(
-        '-n', '--name', required=True, action='store', dest='name', type=str, help='Target name'
+        '-n', '--name', required=True, action='store', dest='name', type=str, help='Folder name'
     )
     parser.add_argument(
-        '-i', '--image', required=True, action='store', dest='image', type=str, help='Name of Image'
+        '-i', '--image', required=True, action='store', dest='image', type=str, help='Name of Image to run'
     )
     parser.add_argument(
         '-c', '--command', action='store', dest='command', type=str, help='Command to pass (space-separated arguments)'
@@ -63,7 +62,7 @@ def main():
         '-t', '--target', action='store', dest='target', type=str, help='Target to scan'
     )
     target_group.add_argument(
-        '-f', '--file', action='store', dest='file', type=str, help='File to pass'
+        '-f', '--file', action='store', dest='file', type=str, help='Target file location'
     )
 
     args = parser.parse_args()
