@@ -43,7 +43,7 @@ def main():
     banner()
 
     parser = argparse.ArgumentParser(
-        description='An automation tool for running Red Team tools in containers'
+        description='Automation for running Red Team tools in containers'
     )
     parser.add_argument(
         '-n', '--name', required=True, action='store', dest='name', type=str, help='Target name'
