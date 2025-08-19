@@ -73,7 +73,7 @@ censys_secret = <censys_secret>
 ## Basic Usage
 
 ```zsh
-python3 tacticontainer.py -n <name_of_target> -t <target> -i <docker_image_name>
+python3 tacticontainer.py -n <name_of_output_folder> -t <target> -i <docker_image_name>
 ```
 
 ## Available Options
