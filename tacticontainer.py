@@ -45,13 +45,13 @@ def main():
         description='Automation for running Red Team tools in containers'
     )
     parser.add_argument(
-        '-n', '--name', required=True, action='store', dest='name', type=str, help='Folder name to save output'
+        '-n', '--name', required=True, action='store', dest='name', type=str, help='Name of output folder'
     )
     parser.add_argument(
-        '-i', '--image', required=True, action='store', dest='image', type=str, help='Name of Image to run'
+        '-i', '--image', required=True, action='store', dest='image', type=str, help='Name of the image to run'
     )
     parser.add_argument(
-        '-c', '--command', action='store', dest='command', type=str, help='Command to pass (space-separated arguments)'
+        '-c', '--command', action='store', dest='command', type=str, help='Custom command to run (space-separated arguments)'
     )
     parser.add_argument(
         '-d', '--debug', action='store_true', dest='debug', help='Debug mode'
@@ -59,7 +59,7 @@ def main():
 
     target_group = parser.add_mutually_exclusive_group(required=True)
     target_group.add_argument(
-        '-t', '--target', action='store', dest='target', type=str, help='Target to scan'
+        '-t', '--target', action='store', dest='target', type=str, help='The target to run the tool on'
     )
     target_group.add_argument(
         '-f', '--file', action='store', dest='file', type=str, help='Targets file location'

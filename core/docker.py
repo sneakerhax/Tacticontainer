@@ -35,49 +35,52 @@ def build_image(docker_client, image, tool_dir):
         sys.exit(1)
 
 
-def run_container(image, docker_client, target, command, volume):
-    """Run a Docker container for the specified image and arguments."""
+def run_nmap(docker_client, image, target, command, volume):
     if volume:
-        print(f"[+] Running container {str(image.capitalize())} with target file: {Path(volume[0].split(':')[0]).name}")
-    else:
-        print(f"[+] Running container {str(image.capitalize())} on target {str(target)}")
+        volume_command = (command if command else []) + ["-iL", "/targets.txt"]
+        return docker_client.containers.run(image, remove=True, command=volume_command, volumes=volume)
+    return docker_client.containers.run(image, remove=True, command=(command + [target] if command else target))
+
+def run_nmap_small(docker_client, image, target, command, volume):
+    return docker_client.containers.run(image, remove=True, command=command if command else target)
+
+def run_whatweb(docker_client, image, target, command, volume):
+    return docker_client.containers.run(image, remove=True, command=command if command else ["--color=never", target])
+
+def run_dirsearch(docker_client, image, target, command, volume):
+    return docker_client.containers.run(image, remove=True, command=command if command else ["--no-color", "-q", "-u", target])
+
+def run_subfinder(docker_client, image, target, command, volume):
+    return docker_client.containers.run(image, remove=True, command=command if command else ["-d", target])
+
+def run_naabu(docker_client, image, target, command, volume):
+    return docker_client.containers.run(image, remove=True, command=command if command else ["-host", target])
+
+def run_httpx(docker_client, image, target, command, volume):
+    return docker_client.containers.run(image, remove=True, command=command if command else ["-u", target])
+
+def run_nuclei(docker_client, image, target, command, volume):
+    return docker_client.containers.run(image, remove=True, command=command if command else ["-u", target])
+
+def run_container(image, docker_client, target, command, volume):
+    print(f"[+] Running container {str(image.capitalize())} with target file: {Path(volume[0].split(':')[0]).name}" if volume else f"[+] Running container {str(image.capitalize())} on target {str(target)}")
     try:
         if image == "nmap":
-            if volume:
-                if command:
-                    container_output = docker_client.containers.run(image, remove=True, command=["-iL", "/targets.txt"] + command, volumes=volume)
-                else:
-                    container_output = docker_client.containers.run(image, remove=True, command=["-iL", "/targets.txt"], volumes=volume)
-            elif command:
-                container_output = docker_client.containers.run(image, remove=True, command=command)
-            else:
-                container_output = docker_client.containers.run(image, remove=True, command=target)
+            container_output = run_nmap(docker_client, image, target, command, volume)
         elif image == "nmap-small":
-            if command:
-                container_output = docker_client.containers.run(image, remove=True, command=command)
-            else:
-                container_output = docker_client.containers.run(image, remove=True, command=target)
+            container_output = run_nmap_small(docker_client, image, target, command, volume)
         elif image == "whatweb":
-            container_output = docker_client.containers.run(image, remove=True, command=["--color=never", target])
+            container_output = run_whatweb(docker_client, image, target, command, volume)
         elif image == "dirsearch":
-            container_output = docker_client.containers.run(image, remove=True, command=["--no-color", "-q", "-u", target])
+            container_output = run_dirsearch(docker_client, image, target, command, volume)
         elif image == "subfinder":
-            container_output = docker_client.containers.run(image, remove=True, command=["-d", target])
+            container_output = run_subfinder(docker_client, image, target, command, volume)
         elif image == "naabu":
-            if command:
-                container_output = docker_client.containers.run(image, remove=True, command=command)
-            else:
-                container_output = docker_client.containers.run(image, remove=True, command=["-host", target])
+            container_output = run_naabu(docker_client, image, target, command, volume)
         elif image == "httpx":
-            if command:
-                container_output = docker_client.containers.run(image, remove=True, command=command)
-            else:
-                container_output = docker_client.containers.run(image, remove=True, command=["-u", target])
+            container_output = run_httpx(docker_client, image, target, command, volume)
         elif image == "nuclei":
-            if command:
-                container_output = docker_client.containers.run(image, remove=True, command=command)
-            else:
-                container_output = docker_client.containers.run(image, remove=True, command=["-u", target])
+            container_output = run_nuclei(docker_client, image, target, command, volume)
         else:
             raise ValueError(f"Unsupported image: {image}")
         return container_output

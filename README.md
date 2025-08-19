@@ -70,7 +70,7 @@ censys_API_ID = <censys_API_ID>
 censys_secret = <censys_secret>
 ```
 
-## Usage
+## Basic usage
 
 ```zsh
 python3 tacticontainer.py -n <name_of_target> -t <target> -i <docker_image_name>
@@ -78,9 +78,12 @@ python3 tacticontainer.py -n <name_of_target> -t <target> -i <docker_image_name>
 
 ## Available Options
 ```
---name            Name of target (this will become the output folder name)
---target          Target the tool will run on
---image           The name of the image that will run
+-n, --name            Name of output folder
+-t, --target          The target to run the tool on
+-i, --image           The name of the image to run
+-f, --file            The targets file location
+-c, --command.        Custom command to run (space-separated arguments)
+-d, --debug           Debug mode
 ```
 
 ## Example Usage
