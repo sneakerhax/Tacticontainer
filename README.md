@@ -151,7 +151,7 @@ Running an nmap scan with targets file
 | Image      | Remote Source | Custom Command | Target File |
 |:-----------|:--------------|:---------------|:------------|
 | Nmap       | No            | Yes            | Yes         |
-| Nmap-small | No            | Yes            | No          |
+| Nmap-small | No            | Yes            | Yes         |
 | Whatweb    | No            | Yes            | No          |
 | Dirsearch  | Yes           | Yes            | No          |
 | Subfinder  | Yes           | Yes            | No          |
