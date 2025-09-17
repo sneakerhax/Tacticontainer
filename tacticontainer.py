@@ -16,7 +16,7 @@ remote_sources = [
     ["httpx", "https://github.com/projectdiscovery/httpx"],
     ["nuclei", "https://github.com/projectdiscovery/nuclei"]
 ]
-supports_target_file = ["nmap"]
+supports_target_file = ["nmap", "nmap-small"]
 
 
 def banner():

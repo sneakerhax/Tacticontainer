@@ -1,5 +1,15 @@
-output/**/*.txt
-config.conf
-Containers
+# Python virtual environment
 .venv/
-core/__pycache__/
+**/__pycache__/
+
+# Input files
+targets.txt
+
+# Output files
+output/**/*.txt
+
+# Configuration files
+config.conf
+
+# Remote Containers folder
+Containers

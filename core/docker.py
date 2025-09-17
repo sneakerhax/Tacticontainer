@@ -42,7 +42,10 @@ def run_nmap(docker_client, image, target, command, volume):
     return docker_client.containers.run(image, remove=True, command=(command + [target] if command else target))
 
 def run_nmap_small(docker_client, image, target, command, volume):
-    return docker_client.containers.run(image, remove=True, command=command if command else target)
+    if volume:
+        volume_command = (command if command else []) + ["-iL", "/targets.txt"]
+        return docker_client.containers.run(image, remove=True, command=volume_command, volumes=volume)
+    return docker_client.containers.run(image, remove=True, command=(command + [target] if command else target))
 
 def run_whatweb(docker_client, image, target, command, volume):
     return docker_client.containers.run(image, remove=True, command=command if command else ["--color=never", target])
