@@ -70,10 +70,10 @@ censys_API_ID = <censys_API_ID>
 censys_secret = <censys_secret>
 ```
 
-## Basic usage
+## Basic Usage
 
 ```zsh
-python3 tacticontainer.py -n <name_of_target> -t <target> -i <docker_image_name>
+python3 tacticontainer.py -n <name_of_output_folder> -t <target> -i <docker_image_name>
 ```
 
 ## Available Options
@@ -124,7 +124,7 @@ $ python3 tacticontainer.py -n scanme -t scanme.nmap.org -i naabu -c "-p 80 -j -
 [*] Finished Scan at 02-11-2025_17:57:55
 [+] Writing output to output/scanme/scanme.nmap.org_naabu_02-11-2025_17:57:55.txt
 ```
-When using -c you must specify all arguments and the target (Unless specifying target file)
+When using -c you must specify all arguments and the target (Unless specifying targets file)
 
 ```
 python3 tacticontainer.py -i nmap -n scanme.nmap.org -f targets.txt           
@@ -144,18 +144,21 @@ python3 tacticontainer.py -i nmap -n scanme.nmap.org -f targets.txt
 [+] Writing output to output/scanme.nmap.org/nmap_03-25-2025_18:01:02.txt
 ```
 
-Running scan with target file
+Running an nmap scan with targets file
 
-## Current images
+## Supported Images
 
-* Nmap (supports target file)
-* Nmap-small
-* Whatweb
-* Dirsearch
-* Subfinder
-* Naabu
-* Httpx
-* Nuclei
+| Image      | Remote Source | Custom Command | Target File |
+|:-----------|:--------------|:---------------|:------------|
+| Nmap       | No            | Yes            | Yes         |
+| Nmap-small | No            | Yes            | Yes         |
+| Whatweb    | No            | Yes            | No          |
+| Dirsearch  | Yes           | Yes            | No          |
+| Subfinder  | Yes           | Yes            | No          |
+| Naabu      | Yes           | Yes            | No          |
+| HTTPX      | Yes           | Yes            | No          |
+| Nuclei     | Yes           | Yes            | No          |
+
 
 ## References
 
