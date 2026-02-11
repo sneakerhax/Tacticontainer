@@ -57,7 +57,10 @@ def run_subfinder(docker_client, image, target, command, volume):
     return docker_client.containers.run(image, remove=True, command=command if command else ["-d", target])
 
 def run_naabu(docker_client, image, target, command, volume):
-    return docker_client.containers.run(image, remove=True, command=command if command else ["-host", target])
+    if volume:
+        volume_command = (command if command else []) + ["-list", "/targets.txt"]
+        return docker_client.containers.run(image, remove=True, command=volume_command, volumes=volume)
+    return docker_client.containers.run(image, remove=True, command=(command + ["-host", target] if command else ["-host", target]))
 
 def run_httpx(docker_client, image, target, command, volume):
     return docker_client.containers.run(image, remove=True, command=command if command else ["-u", target])
