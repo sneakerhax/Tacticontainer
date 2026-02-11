@@ -155,7 +155,7 @@ Running an nmap scan with targets file
 | Whatweb    | No            | Yes            | No          |
 | Dirsearch  | Yes           | Yes            | No          |
 | Subfinder  | Yes           | Yes            | No          |
-| Naabu      | Yes           | Yes            | No          |
+| Naabu      | Yes           | Yes            | Yes         |
 | HTTPX      | Yes           | Yes            | No          |
 | Nuclei     | Yes           | Yes            | No          |
 
