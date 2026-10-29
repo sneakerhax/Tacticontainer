@@ -1,12 +1,13 @@
 import argparse
 import configparser
 import datetime
+import subprocess
 import sys
 from pathlib import Path
 from urllib.parse import urlparse
-from core.docker import build_image, run_container, get_docker_client
-from core.github import pull_containers_repo, pull_remote_source
 
+from core.docker import build_image, get_docker_client, run_container
+from core.github import pull_containers_repo, pull_remote_source
 
 containers_dir = "Containers"
 remote_sources = [
@@ -26,9 +27,9 @@ def banner():
     print(r"  / / / __ `/ ___/ __/ / ___/ __ \/ __ \/ __/  __` / / __ \/ _ \/ ___/")
     print(r" / / / /_/ / /__/ /_/ / /__/ /_/ / / / / /_/  /_/ / / / / /  __/ /")
     print(r"/_/  \__,_/\___/\__/_/\___/\____/_/ /_/\__\/\__,_/_/_/ /_/\___/_/")
-    print("")
+    print()
     print("\t by sneakerhax...")
-    print("")
+    print()
 
 
 def extract_hostname(url):
@@ -72,13 +73,13 @@ def main():
     try:
         config = configparser.ConfigParser()
         config.read('config.conf')
-    except Exception as e:
+    except (configparser.Error, UnicodeError) as e:
         print(f"[-] Failed to load config file: {e}")
         sys.exit(1)
 
     try:
         pull_containers_repo(containers_dir)
-    except Exception as e:
+    except (OSError, subprocess.SubprocessError) as e:
         print(f"[-] Failed to pull/update containers: {e}")
         sys.exit(1)
 
@@ -93,7 +94,7 @@ def main():
             try:
                 file = Path.resolve(Path(args.file))
                 volume = [f"{file}:/targets.txt"]
-            except Exception as e:
+            except (OSError, RuntimeError) as e:
                 print(f"[-] Failed to resolve file path: {e}")
                 sys.exit(1)
         else:
@@ -128,7 +129,7 @@ def main():
     try:
         with open(outputpath, 'w') as out:
             out.write(container_output.decode())
-    except IOError as e:
+    except OSError as e:
         print(f"[-] Failed to write output file: {e}")
         sys.exit(1)
 
