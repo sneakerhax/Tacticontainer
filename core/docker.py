@@ -1,6 +1,8 @@
 import sys
 from pathlib import Path
+
 import docker
+from docker.errors import BuildError, ContainerError, DockerException
 
 
 def get_docker_client():
@@ -10,66 +12,81 @@ def get_docker_client():
         # Test connection
         client.ping()
         return client
-    except docker.errors.DockerException as e:
+    except DockerException as e:
         print(f"[-] Failed to connect to Docker daemon: {e}")
-        sys.exit(1)
-    except Exception as e:
-        print(f"[-] Unexpected error while connecting to Docker: {e}")
         sys.exit(1)
 
 
 def build_image(docker_client, image, tool_dir):
     """Build a Docker image from the specified tool directory."""
-    print(f"[+] Building image {str(image.capitalize())}")
+    print(f"[+] Building image {image.capitalize()!s}")
     try:
         if Path.exists(tool_dir):
             docker_client.images.build(path=str(tool_dir), rm=True, tag=image)
         else:
             print("[-] Path to Dockerfile does not exist")
             sys.exit(1)
-    except docker.errors.BuildError as e:
+    except BuildError as e:
         print(f"[-] Failed to build Docker image: {e}")
         sys.exit(1)
-    except Exception as e:
+    except DockerException as e:
         print(f"[-] Unexpected error during build: {e}")
         sys.exit(1)
+
+
+def _run(docker_client, image, command=None, volumes=None):
+    """Run a container and return its output.
+
+    containers.run() returns None when the Docker logging driver is not
+    json-file/journald (e.g. 'local'), so logs are collected explicitly.
+    """
+    container = docker_client.containers.run(image, command=command, volumes=volumes, detach=True)
+    try:
+        result = container.wait()
+        output = container.logs(stdout=True, stderr=True)
+    finally:
+        container.remove(force=True)
+    exit_status = result.get("StatusCode", 0)
+    if exit_status != 0:
+        raise ContainerError(container, exit_status, command, image, output)
+    return output
 
 
 def run_nmap(docker_client, image, target, command, volume):
     if volume:
         volume_command = (command if command else []) + ["-iL", "/targets.txt"]
-        return docker_client.containers.run(image, remove=True, command=volume_command, volumes=volume)
-    return docker_client.containers.run(image, remove=True, command=(command + [target] if command else target))
+        return _run(docker_client, image, command=volume_command, volumes=volume)
+    return _run(docker_client, image, command=(command + [target] if command else target))
 
 def run_nmap_small(docker_client, image, target, command, volume):
     if volume:
         volume_command = (command if command else []) + ["-iL", "/targets.txt"]
-        return docker_client.containers.run(image, remove=True, command=volume_command, volumes=volume)
-    return docker_client.containers.run(image, remove=True, command=(command + [target] if command else target))
+        return _run(docker_client, image, command=volume_command, volumes=volume)
+    return _run(docker_client, image, command=(command + [target] if command else target))
 
 def run_whatweb(docker_client, image, target, command, volume):
-    return docker_client.containers.run(image, remove=True, command=command if command else ["--color=never", target])
+    return _run(docker_client, image, command=command if command else ["--color=never", target])
 
 def run_dirsearch(docker_client, image, target, command, volume):
-    return docker_client.containers.run(image, remove=True, command=command if command else ["--no-color", "-q", "-u", target])
+    return _run(docker_client, image, command=command if command else ["--no-color", "-q", "-u", target])
 
 def run_subfinder(docker_client, image, target, command, volume):
-    return docker_client.containers.run(image, remove=True, command=command if command else ["-d", target])
+    return _run(docker_client, image, command=command if command else ["-d", target])
 
 def run_naabu(docker_client, image, target, command, volume):
     if volume:
         volume_command = (command if command else []) + ["-list", "/targets.txt"]
-        return docker_client.containers.run(image, remove=True, command=volume_command, volumes=volume)
-    return docker_client.containers.run(image, remove=True, command=(command + ["-host", target] if command else ["-host", target]))
+        return _run(docker_client, image, command=volume_command, volumes=volume)
+    return _run(docker_client, image, command=(command + ["-host", target] if command else ["-host", target]))
 
 def run_httpx(docker_client, image, target, command, volume):
-    return docker_client.containers.run(image, remove=True, command=command if command else ["-u", target])
+    return _run(docker_client, image, command=command if command else ["-u", target])
 
 def run_nuclei(docker_client, image, target, command, volume):
-    return docker_client.containers.run(image, remove=True, command=command if command else ["-u", target])
+    return _run(docker_client, image, command=command if command else ["-u", target])
 
 def run_container(image, docker_client, target, command, volume):
-    print(f"[+] Running container {str(image.capitalize())} with target file: {Path(volume[0].split(':')[0]).name}" if volume else f"[+] Running container {str(image.capitalize())} on target {str(target)}")
+    print(f"[+] Running container {image.capitalize()!s} with target file: {Path(volume[0].split(':')[0]).name}" if volume else f"[+] Running container {image.capitalize()!s} on target {target!s}")
     try:
         if image == "nmap":
             container_output = run_nmap(docker_client, image, target, command, volume)
@@ -90,9 +107,9 @@ def run_container(image, docker_client, target, command, volume):
         else:
             raise ValueError(f"Unsupported image: {image}")
         return container_output
-    except docker.errors.ContainerError as e:
+    except ContainerError as e:
         print(f"[-] Container error: {e}")
         sys.exit(1)
-    except Exception as e:
+    except (DockerException, ValueError) as e:
         print(f"[-] Unexpected error: {e}")
         sys.exit(1)

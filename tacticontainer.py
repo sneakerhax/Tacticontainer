@@ -13,7 +13,6 @@ containers_dir = "Containers"
 remote_sources = [
     ["dirsearch", "https://github.com/maurosoria/dirsearch"],
     ["subfinder", "https://github.com/projectdiscovery/subfinder"],
-    ["naabu", "https://github.com/projectdiscovery/naabu"],
     ["httpx", "https://github.com/projectdiscovery/httpx"],
     ["nuclei", "https://github.com/projectdiscovery/nuclei"]
 ]

@@ -107,7 +107,7 @@ $ python3 tacticontainer.py -n sample -t scanme.nmap.org -i nmap
 Running basic nmap scan with required arguments
 
 ```
-$ python3 tacticontainer.py -n scanme -t scanme.nmap.org -i naabu -c "-p 80 -j -host scanme.nmap.org"
+$ python3 tacticontainer.py -n scanme -t scanme.nmap.org -i naabu -c "-p 80 -nc -silent -host scanme.nmap.org"
   ______           __  _                  __        _
  /_  __/___ ______/ /_(_)________  ____  / /_____ _(_)___  ___  _____
   / / / __ `/ ___/ __/ / ___/ __ \/ __ \/ __/ __ `/ / __ \/ _ \/ ___/
